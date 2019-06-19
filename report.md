@@ -39,13 +39,6 @@ Trainable params: 107,585
 Non-trainable params: 0
 ```
 
-Result:
-
-<p align="center">
-  <img width="760" height="400" src="plot2.png">
-</p>
-
-
 
 #### GRU network:
 ```
@@ -158,20 +151,16 @@ Trainable params: 13,697
 Non-trainable params: 0
 ```
 
+## Observation and results
+
+<p align="center">
+  <img width="760" height="400" src="plot2.png">
+</p>
+
 <p align="center">
   <img width="760" height="400" src="plot1.png">
 </p>
 
-## Observation and results
-
-
-
-
-
-
-<p align="center">
-  <img width="460" height="300" src="plot1.png">
-</p>
 
 GRU, GRU dropout, GRU stacked
 Epoch 11/20
