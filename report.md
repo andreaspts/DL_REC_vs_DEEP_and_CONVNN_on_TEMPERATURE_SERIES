@@ -153,6 +153,11 @@ Non-trainable params: 0
 
 ## Observation and results
 
+First run:
+
+keras.optimizers.RMSprop
+lr 0.01
+
 <p align="center">
   <img width="760" height="400" src="plot2.png">
 </p>
@@ -162,15 +167,50 @@ Non-trainable params: 0
 </p>
 
 
+
+
 GRU, GRU dropout, GRU stacked
 Epoch 11/20
 500/500 [==============================] - 238s 476ms/step - loss: nan - val_loss: nan
 
-prone to the exploding gradients problem (the likely cause of the nans)
+exploding gradients problem (the likely cause of the nans)
 
-attempt at solution: L2 regularization added
+
+
+Possible reasons:
+
+    Gradient blow up
+    Your input contains nan (or unexpected values)
+    Loss function not implemented properly
+    Numerical instability in the Deep learning framework
+
+You can check whether it always becomes nan when fed with a particular input or is it completely random.
+
+Usual practice is to reduce the learning rate in step manner after every few iterations.
+
+
+attempt at solution: L2 regularization added. does not lead to a significant improvement (at most a few more episodes before nan)
 
 another attempt: fix the issue indirectly rather than directly. I would recommend using gradient clipping, which will simply clip any gradients that are above a certain value. 
+
+Second run:
+
+keras.optimizers.Adam
+lr 0.005
+
+kernel_regularizer=regularizers.l2(0.001)
+
+clipnorm=1.0
+
+
+<p align="center">
+  <img width="760" height="400" src="plot3.png">
+</p>
+
+<p align="center">
+  <img width="760" height="400" src="plot4.png">
+</p>
+
 
 
 
