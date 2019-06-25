@@ -7,7 +7,7 @@ Analysis of a weather timeseries dataset using recurrent, deep and convolutional
 In this repository we seek to apply a simple fully connected network, a convnet and different recurrent neural networks to analyze a weather timeseries dataset (the so-called "Jena climate dataset") and predict the air temperature `24` hours in the future.
 
 ### Getting started
-Computations were done using python 3.7. The needed packages are all listed in the head of the attached Jupiter notebook. In case one of them is not preinstalled, type
+Computations were done using python 3.7. The needed packages are all listed in the head of the attached Jupyter notebook. In case one of them is not preinstalled, type
 
 ```
 import sys
