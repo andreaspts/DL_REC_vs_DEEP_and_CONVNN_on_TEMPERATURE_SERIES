@@ -12,7 +12,7 @@ Generally speaking, the goal of our analysis is to feed the networks with the tr
 
 The underlying insight to use deep neural networks for such a task (essentially a fitting-to-data problem) is that they are very powerful [function approximators](https://en.wikipedia.org/wiki/Universal_approximation_theorem). In this task we want to compare the performance on timeseries prediction of a [fully connected](https://www.deeplearningbook.org/contents/mlp.html), a [convolutional](https://www.deeplearningbook.org/contents/convnets.html) and a [recurrent](https://www.deeplearningbook.org/contents/rnn.html) neural network. 
 
-The basic difference in between a fully connected and a convolutional layer is that the former learns global patterns in their input feature space while the latter learns local patterns. Importantly, these patterns are translation invariant and once a specific pattern is learnt in some part of data it can be recognized in another part. In this way, convnets need less training examples as they have a greater generalization power. In addition, convnets can learn more and more complex concepts while going deeper into the network. Hence, they can recognize statistical hierarchies of patterns. `1d` CONVNETs together with recurrent neural networks correspond to the two fundamental deep-learning algorithms available for processing sequential data (document and timeseries classification/comparison, sequence-to-sequence learning, sentiment analysis and timeseries forecasting). In particular, we will use simple recurrent NNs for our present timeseries regression problem. As opposed to dense NNs and CONVNETs, recurrent NNs do have a memory which allows them to better process sequential information. More precisely, these networks interate through the elements of a sequence and while doing so keep information relative to what has been processed up to then. (In other words, a recurrent NN corresponds to a for loop which recycles information which has been computed during the foregoing iteration step of the loop.) Keras can implement different types of recurrent NNs and we will focus here on using the so-called GRU (gated recurrent unit) architecture. 
+The basic difference in between a fully connected and a convolutional layer is that the former learns global patterns in their input feature space while the latter learns local patterns. Importantly, these patterns are translation invariant and once a specific pattern is learnt in some part of data it can be recognized in another part. In this way, convnets need less training examples as they have a greater generalization power. In addition, convnets can learn more and more complex concepts while going deeper into the network. Hence, they can recognize statistical hierarchies of patterns. `1d` CONVNETs together with recurrent neural networks correspond to the two fundamental deep-learning algorithms available for processing sequential data (document and timeseries classification/comparison, sequence-to-sequence learning, sentiment analysis and timeseries forecasting). In particular, we will use simple recurrent NNs for our present timeseries regression problem. As opposed to dense NNs and CONVNETs, recurrent NNs do have a memory which allows them to better process sequential information. More precisely, these networks iterate through the elements of a sequence and while doing so keep information relative to what has been processed up to then. (In other words, a recurrent NN corresponds to a for loop which recycles information which has been computed during the foregoing iteration step of the loop.) Keras can implement different types of recurrent NNs and we will focus here on using the so-called GRU (gated recurrent unit) architecture. A detailed discussion of their setup, is found [here](https://www.deeplearningbook.org/contents/rnn.html).
 
 
 ### Network architectures (aspects of the learning algorithm)
@@ -55,7 +55,7 @@ Trainable params: 4,545
 Non-trainable params: 0
 ```
 
-Nect, we set up bidirectional GRU with one layer. For a problem such as temperature prediction, information coming
+Next, we set up a bidirectional GRU with one layer. For a problem such as temperature prediction, information coming
 from the reversed direction cannot have a major impact as the temperature is effected by the recent past as we know. So we do not
 expect much gains from such an architecture here. The bidirectionality is introduced via "model.add(keras.layers.Bidirectional(keras.layers.GRU(32),..." where the first GRU is argument to the Bidirectional section.
 
@@ -93,7 +93,7 @@ Non-trainable params: 0
 
 Next, we set up a stacked recurrent NN a la GRU with dropout and two layers. This should be good a) against overfitting b) reach good scores/overcoming a potential performance bottleneck as compared to networks of lower capacity. 
 
-Again, we would have to train on more epochs (to counter the dropout) but abstain from this here.  Overfitting can again become a problem if we inflate the network architecture (layers and their units) to greedily. Notice that intermediate layers have "return_sequences = True" in the argument for which we refer to the jupyter notebook.
+Again, we would have to train on more epochs (to counter the dropout) but abstain from this here.  Overfitting can again become a problem if we inflate the network architecture (layers and their units) to greedily. Notice that intermediate layers have "return_sequences = True" in the argument for which we refer to the Jupyter notebook.
 
 #### Stacked GRU network with dropout:
 
@@ -166,8 +166,7 @@ Non-trainable params: 0
 
 First run:
 
-keras.optimizers.RMSprop
-lr 0.01
+We used as an optimizer "keras.optimizers.RMSprop" with a learning rate of `0.01`.
 
 <p align="center">
   <img width="760" height="400" src="plot2.png">
@@ -197,7 +196,7 @@ Epoch 11/20
 500/500 [==============================] - 238s 476ms/step - loss: nan - val_loss: nan
 ```
 
-which indicates an exploding gradients problem most likely causeing of the nans. (Other reasons could be 1. nan-input data, 2. wrongly implemented loss function or 3. a numerical instability in the deep learning framework. From tests we can exclude these three.) Usual practice to counter this issue then is to decrease the learning rate. (Adding merely L2-regularization via "kernel_regularizer=regularizers.l2(0.001)" does not lead to a significant improvement. Also employing gradient clipping via "clipnorm=1.0" does not help on its own.) This led us to perform a second run, where we employ all of them and set the learning rate to `0.005`. In addition we used a different optimizer: "keras.optimizers.Adam".
+which indicates an exploding gradients problem most likely causeing of the nans. (Other reasons could be 1. nan-input data, 2. wrongly implemented loss function or 3. a numerical instability in the deep learning framework. From tests we can exclude these three.) Usual practice to counter this issue then is to decrease the learning rate. (Adding merely L2-regularization via "kernel_regularizer=regularizers.l2(0.001)" does not lead to a significant improvement. Also employing gradient clipping via "clipnorm=1.0" does not help on its own.) This led us to perform a second run, where we employ all of them and set the learning rate to `0.005`. In addition, we used a different optimizer: "keras.optimizers.Adam".
 
 Second run: 
 
